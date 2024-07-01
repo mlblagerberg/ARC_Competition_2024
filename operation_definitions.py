@@ -1,6 +1,6 @@
 """Project: Define Initial Algebras
 Start: June 28th 2024
-Last touched: June 30th, 2024
+Last touched: July 1st, 2024
 Author: Madeleine L.
 """
 
@@ -15,7 +15,7 @@ import abstract_algebra as aa
 with open(os.path.expanduser("~/GitHub/arc_2024/data/ARC-AGI/data/training/0a938d79.json"), 'r') as data:
     data = json.load(data)
 
-print(data)
+# print(data["train"][0])
 
 
 def addition(input_matrix, value):
@@ -34,6 +34,14 @@ def rotate_90(input_matrix):
     return np.rot90(input_matrix)
 
 
+def reflect_vertical(input_matrix):
+    return np.flipud(input_matrix)
+
+
+def reflect_horizontal(input_matrix):
+    return np.fliplr(input_matrix)
+
+
 def color_inverse(input_matrix):
     return 9 - input_matrix
 
@@ -50,5 +58,20 @@ def reshape_matrix(input_matrix, new_shape):
     return output_matrix
 
 
+symmetry_operations = [rotate_90, reflect_vertical, reflect_horizontal]
 
+in_matrix = data["train"][0]["input"]
+in_matrix = np.array(in_matrix)
+print(f"Shape of input matrix: {np.shape(in_matrix)}")
+
+out_matrix = data["train"][0]["output"]
+out_matrix = np.array(out_matrix)
+
+transformed_matrix = in_matrix
+for operation in symmetry_operations:
+    transformed_matrix = operation(transformed_matrix)
+
+print(f"Input matrix: \n{in_matrix}")
+print(f"Output matrix: \n{out_matrix}")
+print(f"Transformed matrix: \n{transformed_matrix}")
 
